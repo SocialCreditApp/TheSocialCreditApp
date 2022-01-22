@@ -1,12 +1,14 @@
 {
   "name": "social_credit",
   "version": "1.0.0",
-  "description": "",
+  "description": "Social Credit program",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"build": "npm install",
+    "start": "node src/server"
   },
-  "author": "",
+  "author": "6times",
   "license": "ISC",
   "dependencies": {
     "localtunnel": "^2.0.2",
