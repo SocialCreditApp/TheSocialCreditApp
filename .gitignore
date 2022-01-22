@@ -1,3 +1,6 @@
+# Config for Server
+config.txt
+
 # Logs
 logs
 *.log
