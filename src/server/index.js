@@ -21,29 +21,6 @@ config["mongodbURL"] = mongoIP;
 
 var port = config["portNum"] || 8080;
 
-if (!config["hasBeenRun"]) {
-  MongoClient.connect(mongoIP + "social_credit", function (err, db) {
-    if (err) throw err;
-    console.log("DB initialized");
-    db.close();
-  });
-  MongoClient.connect(mongoIP, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("social_credit");
-    dbo.createCollection("users", function (err, res) {
-      if (err) throw err;
-      console.log("Collection initialized");
-    });
-    var init_user = { name: "00000001", credits: 0 };
-    dbo.collection("users").insertOne(init_user, function (err, res) {
-      if (err) throw err;
-      console.log("Basic user initialized");
-      db.close();
-    });
-    console.log("Setup complete");
-    config["hasBeenRun"] = 1;
-  });
-}
 fs.writeFileSync("config.txt", JSON.stringify(config));
 
 /* Resources:
@@ -54,7 +31,6 @@ const requestListener = function (req, res) {
   res.setHeader("Content-Type", "application/json");
   switch (req.url) {
     case "/api/credit":
-	  res.setHeader("Content-Type", "application/json");
       switch (req.method) {
         case "POST":
           res.writeHead(501)

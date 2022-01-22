@@ -2,13 +2,13 @@
   "name": "social_credit",
   "version": "1.0.0",
   "description": "Social Credit program",
-  "main": "index.js",
+  "main": "src/server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install",
-    "start": "node src/server"
+    "build": "npm install && cd src/server ; node build.js",
+    "start": "cd src/server ; node ."
   },
-  "author": "6times",
+  "author": "6times & mugman",
   "license": "ISC",
   "dependencies": {
     "localtunnel": "^2.0.2",
