@@ -1,9 +1,17 @@
-var http = require("http");
+var express = require("express");
 var { MongoClient } = require("mongodb");
 var fs = require("fs");
 const path = require("path");
 // const host = "0.0.0.0"; // replace this with localtunnel stuff
 // const port = 8080;
+
+app = express()
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
+app.use(express.json())
 
 try {
   var config = JSON.parse(
@@ -26,25 +34,15 @@ fs.writeFileSync("config.txt", JSON.stringify(config));
 HTTP status codes: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses
 */
 
-const requestListener = function (req, res) {
-  res.setHeader("Content-Type", "application/json");
-  switch (req.url) {
-    case "/api/credit":
-      switch (req.method) {
-        case "POST":
-          res.writeHead(501)
-          res.end(JSON.stringify({ error: "Not Implemented" }));
-          break;
-        case "GET":
-          res.writeHead(501)
-          res.end(JSON.stringify({error: "Not Implemented"}));
-          break;
-      }
-  }
-};
+app.get("/api/credit", (req,res) => {
+	res.send({user: req.body.user || null, error: "Not Implemented"})
+})
 
-const server = http.createServer(requestListener);
-server.listen(port, () => {
+app.post("/api/credit", (req,res) => {
+	res.send({error: "POST Not Implemented"})
+})
+
+app.listen(port, () => {
 if(config["useLT"]) {
   (async () => {
     var tunnel = await require("localtunnel")({port:port, subdomain:config["LTsubdomain"]});
@@ -54,7 +52,6 @@ if(config["useLT"]) {
     });
   })();
 }
-
   console.log(`Server is running on localhost:${port}`);
 });
 
