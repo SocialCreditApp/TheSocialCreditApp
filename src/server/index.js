@@ -1,5 +1,4 @@
 var http = require("http");
-// var lt = require("localtunnel");
 var { MongoClient } = require("mongodb");
 var fs = require("fs");
 const path = require("path");
@@ -46,9 +45,6 @@ const requestListener = function (req, res) {
 
 const server = http.createServer(requestListener);
 server.listen(port, () => {
-  console.log(`Server is running on localhost:${port}`);
-});
-
 if(config["useLT"]) {
   (async () => {
     var tunnel = await require("localtunnel")({port:port, subdomain:config["LTsubdomain"]});
@@ -58,3 +54,7 @@ if(config["useLT"]) {
     });
   })();
 }
+
+  console.log(`Server is running on localhost:${port}`);
+});
+
