@@ -1,0 +1,20 @@
+{
+  "name": "social_credit",
+  "version": "1.0.0",
+  "description": "Social Credit program",
+  "main": "src/server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install && cd src/server ; node build.js",
+    "start": "cd src/server ; node ."
+  },
+  "author": "6times & mugman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "localtunnel": "^2.0.2",
+    "mongodb": "^4.3.0",
+    "package.json": "^2.0.1",
+    "prettier": "^2.5.1"
+  }
+}
