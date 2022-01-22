@@ -1,17 +1,26 @@
 var http = require("http");
-var lt = require("localtunnel");
+// var lt = require("localtunnel");
 var { MongoClient } = require("mongodb");
 var fs = require("fs");
 const path = require("path");
-const host = "0.0.0.0"; // replace this with localtunnel stuff
-const port = 8080;
+// const host = "0.0.0.0"; // replace this with localtunnel stuff
+// const port = 8080;
+
+try {
+  var config = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "/config.txt"), "utf-8")
+  );
+} catch(error) {
+  console.log("no config found, initializing blank");
+  var config = {};
+}
+
+var mongoIP = config["mongodbURL"] || "mongodb://127.0.0.1:27017/";
+config["mongodbURL"] = mongoIP;
 
 
-var config = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "/config.txt"), "utf-8")
-);
+var port = config["portNum"] || 8080;
 
-var mongoIP = config["mongodbURL"];
 if (!config["hasBeenRun"]) {
   MongoClient.connect(mongoIP + "social_credit", function (err, db) {
     if (err) throw err;
@@ -60,6 +69,16 @@ const requestListener = function (req, res) {
 };
 
 const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+server.listen(port, () => {
+  console.log(`Server is running on localhost:${port}`);
 });
+
+if(config["useLT"]) {
+  (async () => {
+    var tunnel = await require("localtunnel")({port:port, subdomain:config["LTsubdomain"]});
+    console.log(tunnel.url);
+    tunnel.on("close", () => {
+      console.log("tunnel closed?");
+    });
+  })();
+}
